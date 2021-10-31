@@ -1,4 +1,4 @@
-import cv2 as cv
+from .__init__ import *
 
 def rescaleFrame(frame, scale=0.75):
 	width = int(frame.shape[1]*scale)
@@ -16,3 +16,15 @@ def changeRes(capture, width, height):
 	capture.set(10, 100)
 	return capture
 
+def pytago(point):
+	a = point[0]
+	b = point[1]
+	return int(sqrt(a**2 + b**2))
+
+def warpImg(obj, img, width, height):
+	pts1 = np.float32((obj.left_top, obj.right_top, obj.left_buttom, obj.right_buttom))
+	pts2 = np.float32(([0, 0],[width,0],[0, height],[width, height]))
+	matrix = cv.getPerspectiveTransform(pts1, pts2)
+	imgOutput = cv.warpPerspective(img, matrix,(width,height))
+
+	return imgOutput
